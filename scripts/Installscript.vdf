@@ -1,0 +1,7 @@
+"InstallScript"
+{
+    "Firewall"
+    {
+        "SlimeVR" "%INSTALLDIR\\slimevr.exe"
+    }
+}

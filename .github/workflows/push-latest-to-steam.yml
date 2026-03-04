@@ -1,0 +1,93 @@
+name: Push latest release to steam
+on: workflow_dispatch
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Create Directories  
+        run: mkdir -p release/windows64 && mkdir -p release/linux64 && mkdir -p release/shared && mkdir -p release/windows64/slimevr_usb_drivers
+
+      - name: Move usb drivers to correct directory
+        run: cp -a depots/windows64/slimevr_usb_drivers/. release/windows64/slimevr_usb_drivers/
+
+      - name: 'Get latest windows release'
+        uses: dsaltares/fetch-gh-release-asset@master
+        with:
+          repo: 'SlimeVR/SlimeVR-Server'
+          version: 'latest'
+          file: 'SlimeVR-win64.zip'
+
+      - name: 'Unzip latest windows release' 
+        run: mkdir -p release/windows64 && unzip SlimeVR-win64.zip -d release/windows64
+      
+      - name: 'Get windows SteamVR Driver'
+        uses: dsaltares/fetch-gh-release-asset@master
+        with:
+          repo: 'SlimeVR/SlimeVR-OpenVR-Driver'
+          version: 'latest'
+          file: 'slimevr-openvr-driver-win64.zip'
+
+      - name: 'Unzip windows SteamVR Driver'
+        run: mkdir -p release/windows64/slimevr-openvr-driver-win64 && unzip slimevr-openvr-driver-win64.zip -d release/windows64/slimevr-openvr-driver-win64
+
+      - name: 'Get windows feeder'
+        uses: dsaltares/fetch-gh-release-asset@master
+        with:
+          repo: 'SlimeVR/SlimeVR-Feeder-App'
+          version: 'latest'
+          file: 'SlimeVR-Feeder-App-win64.zip'
+
+      - name: 'Unzip windows feeder'
+        run: mkdir -p release/windows64/SlimeVR-Feeder-App-win64 && unzip SlimeVR-Feeder-App-win64.zip -d release/windows64/SlimeVR-Feeder-App-win64
+
+      - name: 'Get linux SteamVR Driver'
+        uses: dsaltares/fetch-gh-release-asset@master
+        with:
+          repo: 'SlimeVR/SlimeVR-OpenVR-Driver'
+          version: 'latest'
+          file: 'slimevr-openvr-driver-x64-linux.zip'
+      
+      - name: 'Unzip linux SteamVR Driver'
+        run: mkdir -p release/windows64/slimevr-openvr-driver-x64-linux && unzip slimevr-openvr-driver-x64-linux.zip -d release/windows64/slimevr-openvr-driver-x64-linux
+
+      - name: 'Get Linux feeder'
+        uses: dsaltares/fetch-gh-release-asset@master
+        with:
+          repo: 'SlimeVR/SlimeVR-Feeder-App'
+          version: 'latest'
+          file: 'SlimeVR-Feeder-App-Linux.zip'
+      
+      - name: 'Unzip Linux feeder'
+        run: mkdir -p release/linux64/SlimeVR-Feeder-App-Linux && unzip SlimeVR-Feeder-App-Linux.zip -d release/linux64/SlimeVR-Feeder-App-Linux
+
+      - name: 'Get SlimeVR.jar'
+        uses: dsaltares/fetch-gh-release-asset@master
+        with:
+          repo: 'SlimeVR/SlimeVR-Server'
+          version: 'latest'
+          file: 'slimevr.jar'
+
+      - name: 'Move slimevr.jar to shared directory'
+        run: mv slimevr.jar release/shared/slimevr.jar
+      
+      - name: 'Move installscript to windows depot'
+        run: mv scripts/Installscript.vdf release/windows64/Installscript.vdf
+
+      - name: 'Deploy to steam'
+        uses: game-ci/steam-deploy@v3
+        with:
+          username: ${{ secrets.STEAM_USERNAME }}          
+          configVdf: ${{ secrets.STEAM_CONFIG_VDF }}          
+          appId: 000000
+          buildDescription: Github workflow build
+          rootPath: release/windows64
+          depot1Path: StandaloneWindows64
+          depot1InstallScriptPath: release/windows64
+          depot2Path: release/linux64
+          depot4Path: release/shared
+          releaseBranch: CI
