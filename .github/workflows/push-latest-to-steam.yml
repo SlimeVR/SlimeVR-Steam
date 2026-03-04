@@ -78,6 +78,9 @@ jobs:
       - name: 'Move installscript to windows depot'
         run: mv scripts/Installscript.vdf release/windows64/Installscript.vdf
 
+      - name: 'Move USB installscript to windows depot'
+        run: mv scripts/installusbdrivers.bat release/windows64/installusbdrivers.bat
+
       - name: 'Deploy to steam'
         uses: game-ci/steam-deploy@v3
         with:

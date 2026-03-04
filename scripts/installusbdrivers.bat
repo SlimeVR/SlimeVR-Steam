@@ -5,7 +5,7 @@ set "LOGFILE=%LOG_PATH%driver_install.log"
 :: Driver installation doesn't work w/o admin, slimes will be sad.
 net session >nul 2>&1
 if %errorlevel% == 0 (
-    echo Running with administrative privileges! - Needed for firewall modification!
+    echo Requesting administrative privileges - Needed for Driver installation!
 ) else (
     echo Requesting administrative privileges - Needed for Driver installation!
     :: Temp script to request admin... Works and doesn't leave a mess.
