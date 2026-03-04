@@ -90,4 +90,4 @@ jobs:
           depot1InstallScriptPath: release/windows64
           depot2Path: release/linux64
           depot4Path: release/shared
-          releaseBranch: CI
+          releaseBranch: actions
