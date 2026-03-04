@@ -83,7 +83,7 @@ jobs:
         with:
           username: ${{ secrets.STEAM_USERNAME }}          
           configVdf: ${{ secrets.STEAM_CONFIG_VDF }}          
-          appId: 000000
+          appId: 3245490
           buildDescription: Github workflow build
           rootPath: release/windows64
           depot1Path: StandaloneWindows64
