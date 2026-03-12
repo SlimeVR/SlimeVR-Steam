@@ -1,0 +1,19 @@
+"InstallScript"
+{
+	"Firewall"
+	{
+		"SlimeVR"		"%INSTALLDIR%\\slimevr.exe"
+	}
+	"Run Process"
+	{
+		"InstallDrivers"
+		{
+			"process 1"		"cmd.exe"
+			"command 1"		"/c %WinDir%\\sysnative\\pnputil.exe /add-driver \"%INSTALLDIR%\\slimevr_usb_drivers\\*.inf\" /subdirs /install > \"%INSTALLDIR%\\driver_install.log\" 2>&1"
+		}
+	}
+}
+"kvsignatures"
+{
+	"InstallScript"		"561c19aa493e4e863c2772df331782f813a6893bab015c589b8a49b37983359c91c613214f86b1b8b8c8a992b0ae51dbda84967639d8d18da3eec089ccba61e258c98ae8529b47f14356f5d5efd0f61a5b0f7eb00602ccf28f2a8bd0d77e12ec96335bb7806f9a99cf0687f6570fb10f55ba1465ef4a6dfc12ce40eb5a76867d"
+}
