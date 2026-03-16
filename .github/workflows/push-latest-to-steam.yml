@@ -53,7 +53,7 @@ jobs:
           file: 'SlimeVR-amd64.deb'
         
       - name: 'Unzip linux release'
-        run: 
+        run: |
           mkdir -p release/linux64
           ar x SlimeVR-amd64.deb
           tar -xvf data.tar.xz "./opt/Slime VR/" --directory ./release/linux64
