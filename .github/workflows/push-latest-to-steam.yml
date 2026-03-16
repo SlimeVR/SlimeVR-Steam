@@ -1,5 +1,6 @@
 name: Push latest release to steam
-on: workflow_dispatch
+on: 
+  workflow_dispatch
 
 jobs:
   build_and_deploy:
