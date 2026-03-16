@@ -45,6 +45,19 @@ jobs:
       - name: 'Unzip windows feeder'
         run: mkdir -p release/windows64/SlimeVR-Feeder-App-win64 && unzip SlimeVR-Feeder-App-win64.zip -d release/windows64/SlimeVR-Feeder-App-win64
 
+      - name: 'Get Linux release'
+        uses: dsaltares/fetch-gh-release-asset@master
+        with:
+          repo: 'SlimeVR/SlimeVR-Server'
+          version: 'latest'
+          file: 'SlimeVR-amd64.deb'
+        
+      - name: 'Unzip linux release'
+        run: 
+          mkdir -p release/linux64
+          ar x SlimeVR-amd64.deb
+          tar -xvf data.tar.xz "./opt/Slime VR/" --directory ./release/linux64
+
       - name: 'Get linux SteamVR Driver'
         uses: dsaltares/fetch-gh-release-asset@master
         with:
@@ -53,7 +66,7 @@ jobs:
           file: 'slimevr-openvr-driver-x64-linux.zip'
       
       - name: 'Unzip linux SteamVR Driver'
-        run: mkdir -p release/windows64/slimevr-openvr-driver-x64-linux && unzip slimevr-openvr-driver-x64-linux.zip -d release/windows64/slimevr-openvr-driver-x64-linux
+        run: mkdir -p release/linux64/slimevr-openvr-driver-x64-linux && unzip slimevr-openvr-driver-x64-linux.zip -d release/windows64/slimevr-openvr-driver-x64-linux
 
       - name: 'Get Linux feeder'
         uses: dsaltares/fetch-gh-release-asset@master
