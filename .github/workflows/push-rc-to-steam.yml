@@ -1,4 +1,4 @@
-name: Push latest release to steam
+name: Push rc to steam
 on: 
   workflow_dispatch
 
@@ -20,7 +20,7 @@ jobs:
         uses: dsaltares/fetch-gh-release-asset@master
         with:
           repo: 'SlimeVR/SlimeVR-Server'
-          version: 'latest'
+          version: 'tags/v20.0.0-rc.1'
           file: 'SlimeVR-win64.zip'
 
       - name: 'Unzip latest windows release' 
@@ -50,14 +50,14 @@ jobs:
         uses: dsaltares/fetch-gh-release-asset@master
         with:
           repo: 'SlimeVR/SlimeVR-Server'
-          version: 'latest'
+          version: 'tags/v20.0.0-rc.1'
           file: 'SlimeVR-amd64.deb'
         
       - name: 'Unzip linux release'
         run: |
           mkdir -p release/linux64
           ar x SlimeVR-amd64.deb
-          tar -xvf data.tar.* "./opt/SlimeVR/" --directory ./release/linux64
+          tar -xvf data.tar.xz "./opt/SlimeVR/" --directory ./release/linux64
 
       - name: 'Get linux SteamVR Driver'
         uses: dsaltares/fetch-gh-release-asset@master
