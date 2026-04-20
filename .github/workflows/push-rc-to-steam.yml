@@ -1,4 +1,4 @@
-name: Push rc to steam
+name: Push latest release to steam
 on: 
   workflow_dispatch
 
