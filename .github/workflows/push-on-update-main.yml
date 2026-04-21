@@ -1,4 +1,4 @@
-name: Push release to steam
+name: Push on update to steam
 on: 
   workflow_dispatch:
   repository_dispatch:
