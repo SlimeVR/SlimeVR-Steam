@@ -2,4 +2,4 @@
 
 export PATH=jre/bin:$PATH
 
-./slimevr --steam
+./slimevr -- --steam
