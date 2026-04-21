@@ -28,7 +28,7 @@ jobs:
         uses: dsaltares/fetch-gh-release-asset@master
         with:
           repo: 'SlimeVR/SlimeVR-Server'
-          version: 'tags/v20.0.0-rc.1'
+          version: 'latest'
           file: 'SlimeVR-win64.zip'
 
       - name: 'Unzip windows server' 
@@ -58,7 +58,7 @@ jobs:
         uses: dsaltares/fetch-gh-release-asset@master
         with:
           repo: 'SlimeVR/SlimeVR-Server'
-          version: 'tags/v20.0.0-rc.1'
+          version: 'latest'
           file: 'SlimeVR-amd64.deb'
         
       - name: 'Unzip linux release'
