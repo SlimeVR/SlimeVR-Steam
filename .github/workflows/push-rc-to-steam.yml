@@ -110,9 +110,9 @@ jobs:
           username: ${{ secrets.STEAM_USERNAME }}          
           configVdf: ${{ secrets.STEAM_CONFIG_VDF }}          
           appId: 3245490
-          buildDescription: Github workflow build
+          buildDescription: Github workflow release candidate build
           rootPath: .
           depot1Path: release/windows64
           depot1InstallScriptPath: release/windows64
           depot2Path: release/linux64
-          releaseBranch: actions
+          releaseBranch: release-candidate
