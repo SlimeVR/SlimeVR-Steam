@@ -52,7 +52,6 @@ jobs:
 
       - name: 'Unzip Windows OpenVR Driver'
         run: |
-          mkdir -p release/windows64/slimevr-openvr-driver-win64
           unzip slimevr-openvr-driver-win64.zip -d release/windows64/
           mv release/windows64/slimevr release/windows64/slimevr-openvr-driver-win64
 
@@ -78,10 +77,9 @@ jobs:
       
       - name: 'Unzip linux OpenVR Driver'
         run: |
-         mkdir -p release/linux64/slimevr-openvr-driver-x64-linux 
          unzip slimevr-openvr-driver-x64-linux.zip -d release/linux64/
          mv release/linux64/slimevr release/linux64/slimevr-openvr-driver-x64-linux
-         
+
       - name: 'Move installscript to windows depot'
         run: mv scripts/Installscript.vdf release/windows64/Installscript.vdf
 
