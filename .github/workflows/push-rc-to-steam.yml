@@ -1,4 +1,4 @@
-name: Push release to steam
+name: Push rc to steam
 on: workflow_dispatch
 
 
@@ -7,11 +7,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+      - name: Get Latest Release Tag
+        id: get_tag
+        run: |
+          # This fetches the tag name of the most recent release, including pre-releases
+          TAG=$(gh release list --repo SlimeVR/SlimeVR-Server --limit 1 --json tagName --jq '.[0].tagName')
+          echo "LATEST_TAG=$TAG" >> $GITHUB_ENV
+        env:
+          GH_TOKEN: ${{ github.token }}
+
       - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Create Directories  
-        run: mkdir -p release/windows64/jre && mkdir -p release/linux64/jre && mkdir -p release/shared && mkdir -p release/windows64/slimevr_usb_drivers
+        run: mkdir -p release/windows64/jre && mkdir -p release/linux64/jre && mkdir -p release/windows64/slimevr_usb_drivers
 
       - name: Move launch script to linux depot
         run: mv depots/linux64/launch.sh release/linux64/launch.sh
@@ -29,7 +38,7 @@ jobs:
         uses: dsaltares/fetch-gh-release-asset@master
         with:
           repo: 'SlimeVR/SlimeVR-Server'
-          version: 'tags/v20.0.0-rc.1'
+          version: 'tags/${{ env.LATEST_TAG }}'
           file: 'SlimeVR-win64.zip'
 
       - name: 'Unzip windows server' 
@@ -59,7 +68,7 @@ jobs:
         uses: dsaltares/fetch-gh-release-asset@master
         with:
           repo: 'SlimeVR/SlimeVR-Server'
-          version: 'tags/v20.0.0-rc.1'
+          version: 'tags/${{ env.LATEST_TAG }}'
           file: 'SlimeVR-amd64.deb'
         
       - name: 'Unzip linux release'
@@ -88,16 +97,6 @@ jobs:
       
       - name: 'Unzip Linux feeder'
         run: mkdir -p release/linux64/SlimeVR-Feeder-App-Linux && unzip SlimeVR-Feeder-App-Linux.zip -d release/linux64/SlimeVR-Feeder-App-Linux
-
-      - name: 'Get SlimeVR.jar'
-        uses: dsaltares/fetch-gh-release-asset@master
-        with:
-          repo: 'SlimeVR/SlimeVR-Server'
-          version: 'latest'
-          file: 'slimevr.jar'
-
-      - name: 'Move slimevr.jar to shared directory'
-        run: mv slimevr.jar release/shared/slimevr.jar
       
       - name: 'Move installscript to windows depot'
         run: mv scripts/Installscript.vdf release/windows64/Installscript.vdf
@@ -116,5 +115,4 @@ jobs:
           depot1Path: release/windows64
           depot1InstallScriptPath: release/windows64
           depot2Path: release/linux64
-          depot4Path: release/shared
           releaseBranch: actions
