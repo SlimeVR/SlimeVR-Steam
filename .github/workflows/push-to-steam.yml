@@ -44,16 +44,6 @@ jobs:
       - name: 'Unzip Windows OpenVR Driver'
         run: mkdir -p release/windows64/slimevr-openvr-driver-win64 && unzip slimevr-openvr-driver-win64.zip -d release/windows64/slimevr-openvr-driver-win64
 
-      - name: 'Get Windows feeder'
-        uses: dsaltares/fetch-gh-release-asset@master
-        with:
-          repo: 'SlimeVR/SlimeVR-Feeder-App'
-          version: 'latest'
-          file: 'SlimeVR-Feeder-App-win64.zip'
-
-      - name: 'Unzip Windows feeder'
-        run: mkdir -p release/windows64/SlimeVR-Feeder-App-win64 && unzip SlimeVR-Feeder-App-win64.zip -d release/windows64/SlimeVR-Feeder-App-win64
-
       - name: 'Get Linux release'
         uses: dsaltares/fetch-gh-release-asset@master
         with:
@@ -76,16 +66,6 @@ jobs:
       
       - name: 'Unzip linux SteamVR Driver'
         run: mkdir -p release/linux64/slimevr-openvr-driver-x64-linux && unzip slimevr-openvr-driver-x64-linux.zip -d release/linux64/slimevr-openvr-driver-x64-linux
-
-      - name: 'Get Linux feeder'
-        uses: dsaltares/fetch-gh-release-asset@master
-        with:
-          repo: 'SlimeVR/SlimeVR-Feeder-App'
-          version: 'latest'
-          file: 'SlimeVR-Feeder-App-Linux.zip'
-      
-      - name: 'Unzip Linux feeder'
-        run: mkdir -p release/linux64/SlimeVR-Feeder-App-Linux && unzip SlimeVR-Feeder-App-Linux.zip -d release/linux64/SlimeVR-Feeder-App-Linux
 
       - name: 'Move installscript to windows depot'
         run: mv scripts/Installscript.vdf release/windows64/Installscript.vdf
