@@ -5,11 +5,19 @@ jobs:
   download_and_push:
     runs-on: ubuntu-latest
     steps:
-      - name: Get Latest Release Tag
-        id: get_tag
+      - name: Get Latest Release Tag for server
+        id: get_server_tag
         run: |
           TAG=$(gh release list --repo SlimeVR/SlimeVR-Server --limit 1 --json tagName --jq '.[0].tagName')
-          echo "LATEST_TAG=$TAG" >> $GITHUB_ENV
+          echo "LATEST_SERVER_TAG=$TAG" >> $GITHUB_ENV
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Get Latest Release Tag for driver
+        id: get_driver_tag
+        run: |
+          TAG=$(gh release list --repo SlimeVR/SlimeVR-OpenVR-Driver --limit 1 --json tagName --jq '.[0].tagName')
+          echo "LATEST_DRIVER_TAG=$TAG" >> $GITHUB_ENV
         env:
           GH_TOKEN: ${{ github.token }}
 
@@ -33,7 +41,7 @@ jobs:
         uses: dsaltares/fetch-gh-release-asset@master
         with:
           repo: 'SlimeVR/SlimeVR-Server'
-          version: 'tags/${{ env.LATEST_TAG }}'
+          version: 'tags/${{ env.LATEST_SERVER_TAG }}'
           file: 'SlimeVR-win64.zip'
 
       - name: 'Unzip windows server' 
@@ -44,12 +52,12 @@ jobs:
         uses: dsaltares/fetch-gh-release-asset@master
         with:
           repo: 'SlimeVR/SlimeVR-OpenVR-Driver'
-          version: 'latest'
+          version: 'tags/${{ env.LATEST_DRIVER_TAG }}'
           file: 'slimevr-openvr-driver-win64.zip'
 
       - name: 'Unzip Windows OpenVR Driver'
         run: |
-          unzip slimevr-openvr-driver-win64.zip -d temp_win_driver
+          unzip -o slimevr-openvr-driver-win64.zip -d temp_win_driver
           rm -rf release/windows64/slimevr-openvr-driver-win64
           mv temp_win_driver/slimevr release/windows64/slimevr-openvr-driver-win64
           rm -rf temp_win_driver
@@ -58,7 +66,7 @@ jobs:
         uses: dsaltares/fetch-gh-release-asset@master
         with:
           repo: 'SlimeVR/SlimeVR-Server'
-          version: 'tags/${{ env.LATEST_TAG }}'
+          version: 'tags/${{ env.LATEST_SERVER_TAG }}'
           file: 'SlimeVR-amd64.deb'
         
       - name: 'Unzip linux release'
@@ -71,12 +79,12 @@ jobs:
         uses: dsaltares/fetch-gh-release-asset@master
         with:
           repo: 'SlimeVR/SlimeVR-OpenVR-Driver'
-          version: 'latest'
+          version: 'tags/${{ env.LATEST_DRIVER_TAG }}'
           file: 'slimevr-openvr-driver-x64-linux.zip'
       
       - name: 'Unzip linux OpenVR Driver'
         run: |
-          unzip slimevr-openvr-driver-x64-linux.zip -d temp_linux_driver
+          unzip -o slimevr-openvr-driver-x64-linux.zip -d temp_linux_driver
           rm -rf release/linux64/slimevr-openvr-driver-x64-linux
           mv temp_linux_driver/slimevr release/linux64/slimevr-openvr-driver-x64-linux
           rm -rf temp_linux_driver
@@ -92,7 +100,7 @@ jobs:
           username: ${{ secrets.STEAM_USERNAME }}          
           configVdf: ${{ secrets.STEAM_CONFIG_VDF }}          
           appId: 3245490
-          buildDescription: "SlimeVR Build ${{ env.LATEST_TAG }}"
+          buildDescription: "SlimeVR Server ${{ env.LATEST_SERVER_TAG }} - Driver ${{ env.LATEST_DRIVER_TAG }}"
           rootPath: .
           depot1Path: release/windows64
           depot1InstallScriptPath: release/windows64
