@@ -20,7 +20,7 @@
         {
             "HasRunKey"        "HKEY_CURRENT_USER\\Software\\Valve\\Steam\\Apps\\3245490"
             "process 1"        "%WinDir%\\System32\\pnputil.exe"
-            "command 1"        "/add-driver \"%INSTALLDIR%\\drivers\\*.inf\" /subdirs /install"
+            "command 1"        "/add-driver \"%INSTALLDIR%\\slimevr_usb_drivers\\*.inf\" /subdirs /install"
             "NoCleanUp"        "1"
         }
     }
