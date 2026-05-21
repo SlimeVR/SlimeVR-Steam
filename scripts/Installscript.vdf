@@ -2,15 +2,26 @@
 {
     "Firewall"
     {
-        "SlimeVR" "%INSTALLDIR\\slimevr.exe"
+        "SlimeVR"        "%INSTALLDIR%\\slimevr.exe"
+    }
+    "Registry"
+    {
+        "HKEY_LOCAL_MACHINE\\Software\\Valve\\Steam\\Apps\\3245490"
+        {
+            "string"
+            {
+                "DriversInstalled"    "1"
+            }
+        }
     }
     "Run Process"
     {
         "InstallUSBDrivers"
         {
-            "Process 1" "%WinDir%\\System32\\pnputil.exe"
-            "Command 1" "/add-driver \"%INSTALLDIR%\\drivers\\*.inf\" /subdirs /install"
-            "NoCleanUp" "1"
+            "HasRunKey"        "HKEY_LOCAL_MACHINE\\Software\\Valve\\Steam\\Apps\\3245490"
+            "process 1"        "%WinDir%\\System32\\pnputil.exe"
+            "command 1"        "/add-driver \"%INSTALLDIR%\\drivers\\*.inf\" /subdirs /install"
+            "NoCleanUp"        "1"
         }
     }
 }
