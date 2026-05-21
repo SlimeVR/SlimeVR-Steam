@@ -8,6 +8,7 @@
     {
         "InstallUSBDrivers"
         {
+            "HasRunKey" "HKEY_LOCAL_MACHINE\\Software\\Valve\\Steam\\Apps\\3245490"
             "Process 1" "%WinDir%\\System32\\pnputil.exe"
             "Command 1" "/add-driver \"%INSTALLDIR%\\drivers\\*.inf\" /subdirs /install"
             "NoCleanUp" "1"
