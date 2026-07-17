@@ -62,6 +62,7 @@ jobs:
           rm -rf release/windows64/slimevr-openvr-driver-win64
           mv temp_win_driver/slimevr release/windows64/slimevr-openvr-driver-win64
           rm -rf temp_win_driver
+      # --- End of Windows ---
 
       - name: "Get Linux release"
         uses: dsaltares/fetch-gh-release-asset@master
@@ -69,7 +70,6 @@ jobs:
           repo: "SlimeVR/SlimeVR-Server"
           version: "tags/${{ env.LATEST_SERVER_TAG }}"
           file: "SlimeVR-amd64.deb"
-      # --- End of Windows ---
 
       # --- Start of Linux x64
       - name: "Unzip linux x64 release"
