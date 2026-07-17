@@ -1,0 +1,145 @@
+name: Push rc to steam
+on: workflow_dispatch
+
+jobs:
+  download_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Latest Release Tag for server
+        id: get_server_tag
+        run: |
+          TAG=$(gh release list --repo SlimeVR/SlimeVR-Server --limit 1 --json tagName --jq '.[0].tagName')
+          echo "LATEST_SERVER_TAG=$TAG" >> $GITHUB_ENV
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Get Latest Release Tag for driver
+        id: get_driver_tag
+        run: |
+          TAG=$(gh release list --repo SlimeVR/SlimeVR-OpenVR-Driver --limit 1 --json tagName --jq '.[0].tagName')
+          echo "LATEST_DRIVER_TAG=$TAG" >> $GITHUB_ENV
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Create Base Directories
+        run: |
+          mkdir -p release/windows64/jre 
+          mkdir -p release/linux64/jre 
+          mkdir -p release/windows64/slimevr_usb_drivers
+
+      - name: Move Assets to Depots
+        run: |
+          mv depots/linux64/launch.sh release/linux64/launch.sh
+          mv depots/linux64/jre/* release/linux64/jre/
+          mv depots/windows64/slimevr_usb_drivers/* release/windows64/slimevr_usb_drivers/
+          mv depots/windows64/jre/* release/windows64/jre/
+
+      # --- Start of Windows ---
+      - name: "Get windows server"
+        uses: dsaltares/fetch-gh-release-asset@master
+        with:
+          repo: "SlimeVR/SlimeVR-Server"
+          version: "tags/${{ env.LATEST_SERVER_TAG }}"
+          file: "SlimeVR-win64.zip"
+
+      - name: "Unzip windows server"
+        run: |
+          unzip -o SlimeVR-win64.zip -d release/windows64
+
+      - name: "Get Windows OpenVr Driver"
+        uses: dsaltares/fetch-gh-release-asset@master
+        with:
+          repo: "SlimeVR/SlimeVR-OpenVR-Driver"
+          version: "tags/${{ env.LATEST_DRIVER_TAG }}"
+          file: "slimevr-openvr-driver-win64.zip"
+
+      - name: "Unzip Windows OpenVR Driver"
+        run: |
+          unzip -o slimevr-openvr-driver-win64.zip -d temp_win_driver
+          rm -rf release/windows64/slimevr-openvr-driver-win64
+          mv temp_win_driver/slimevr release/windows64/slimevr-openvr-driver-win64
+          rm -rf temp_win_driver
+
+      - name: "Get Linux release"
+        uses: dsaltares/fetch-gh-release-asset@master
+        with:
+          repo: "SlimeVR/SlimeVR-Server"
+          version: "tags/${{ env.LATEST_SERVER_TAG }}"
+          file: "SlimeVR-amd64.deb"
+      # --- End of Windows ---
+
+      # --- Start of Linux x64
+      - name: "Unzip linux x64 release"
+        run: |
+          mkdir -p release/linux64
+          ar x SlimeVR-amd64.deb
+          tar -xvf data.tar.xz -C ./release/linux64 --strip-components=3 "./opt/SlimeVR"
+
+      - name: "Get linux OpenVR Driver"
+        uses: dsaltares/fetch-gh-release-asset@master
+        with:
+          repo: "SlimeVR/SlimeVR-OpenVR-Driver"
+          version: "tags/${{ env.LATEST_DRIVER_TAG }}"
+          file: "slimevr-openvr-driver-x64-linux.zip"
+
+      - name: "Unzip linux x64 OpenVR Driver"
+        run: |
+          unzip -o slimevr-openvr-driver-x64-linux.zip -d temp_linux_driver
+          rm -rf release/linux64/slimevr-openvr-driver-x64-linux
+          mv temp_linux_driver/slimevr release/linux64/slimevr-openvr-driver-x64-linux
+          rm -rf temp_linux_driver
+      # --- End of Linx x64 ---
+
+      # --- Start of Linux aarch64 ---
+      - name: "Get Linux ARM64 release"
+        uses: dsaltares/fetch-gh-release-asset@master
+        with:
+          repo: "SlimeVR/SlimeVR-Server"
+          version: "tags/${{ env.LATEST_SERVER_TAG }}"
+          file: "SlimeVR-aarch64.deb"
+
+      - name: "Unzip linux ARM64 release"
+        run: |
+          mkdir -p release/linuxaarch64
+          ar x SlimeVR-aarch64.deb
+          tar -xvf data.tar.xz -C ./release/linuxaarch64 --strip-components=3 "./opt/SlimeVR"
+          rm -f data.tar.xz control.tar.gz debian-binary SlimeVR-aarch64.deb
+
+      # aarch64 driver isn't on github releases for now so we just bundle it.
+      #      - name: "Get linux aarch64 OpenVR Driver"
+      #        uses: dsaltares/fetch-gh-release-asset@master
+      #        with:
+      #          repo: "SlimeVR/SlimeVR-OpenVR-Driver"
+      #          version: "tags/${{ env.LATEST_DRIVER_TAG }}"
+      #          file: "slimevr-openvr-driver-aarch64-linux.zip"
+
+      #      - name: "Unzip linux aarch64 OpenVR Driver"
+      #        run: |
+      #          unzip -o slimevr-openvr-driver-aarch64-linux.zip -d temp_arm_driver
+      #          rm -rf release/linux_arm64/slimevr-openvr-driver-aarch64-linux
+      #          mv temp_arm_driver/slimevr release/linux_arm64/slimevr-openvr-driver-aarch64-linux
+      #          rm -rf temp_arm_driver
+      # --- End of Linux aarch64
+
+      - name: "Move installscripts to windows depot"
+        run: |
+          mv scripts/Installscript.vdf release/windows64/Installscript.vdf
+          mv scripts/installusbdrivers.bat release/windows64/installusbdrivers.bat
+
+      - name: "Deploy to steam"
+        uses: game-ci/steam-deploy@v3
+        with:
+          username: ${{ secrets.STEAM_USERNAME }}
+          configVdf: ${{ secrets.STEAM_CONFIG_VDF }}
+          appId: 3245490
+          buildDescription: "SlimeVR Server ${{ env.LATEST_SERVER_TAG }} - Driver ${{ env.LATEST_DRIVER_TAG }}"
+          rootPath: .
+          depot1Path: release/windows64
+          depot1InstallScriptPath: release/windows64
+          depot2Path: release/linux64
+          #depot3path: release/macosaarch64
+          depot4path: release/linuxaarch64
+          releaseBranch: release-candidate
