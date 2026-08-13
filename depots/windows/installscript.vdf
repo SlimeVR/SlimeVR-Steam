@@ -1,0 +1,15 @@
+"InstallScript"
+{
+	"Firewall"
+	{
+		"SlimeVR"		"%INSTALLDIR%\\slimevr.exe"
+	}
+	"Run Process"
+	{
+		"InstallUSBDrivers"
+		{
+            "HasRunKey"     "HKEY_LOCAL_MACHINE\\Software\\Valve\\Steam\\Apps\\3245490"
+            "Process 1"     "%INSTALLDIR%\\installusbdrivers.bat"
+		}
+	}
+}
