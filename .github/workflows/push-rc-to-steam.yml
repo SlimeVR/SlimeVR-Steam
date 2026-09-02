@@ -117,20 +117,18 @@ jobs:
           mkdir -p release/linux/bin/linuxarm64/
           mv depots/linux/bin/linuxarm64/* release/linux/bin/linuxarm64/
 
-      # aarch64 driver isn't on github releases for now so we just bundle it.
-      #      - name: "Get linux aarch64 OpenVR Driver"
-      #        uses: dsaltares/fetch-gh-release-asset@master
-      #        with:
-      #          repo: "SlimeVR/SlimeVR-OpenVR-Driver"
-      #          version: "tags/${{ env.LATEST_DRIVER_TAG }}"
-      #          file: "slimevr-openvr-driver-aarch64-linux.zip"
+      - name: "Get linux aarch64 OpenVR Driver"
+        uses: dsaltares/fetch-gh-release-asset@master
+        with:
+          repo: "SlimeVR/SlimeVR-OpenVR-Driver"
+          version: "latest"
+          file: "slimevr-openvr-driver-aarch64-linux.zip"
 
-      #      - name: "Unzip linux aarch64 OpenVR Driver"
-      #        run: |
-      #          unzip -o slimevr-openvr-driver-aarch64-linux.zip -d temp_arm_driver
-      #          rm -rf release/linux_arm64/slimevr-openvr-driver-aarch64-linux
-      #          mv temp_arm_driver/slimevr release/linux_arm64/slimevr-openvr-driver-aarch64-linux
-      #          rm -rf temp_arm_driver
+      - name: "Unzip linux aarch64 OpenVR Driver"
+        run: |
+          unzip -o slimevr-openvr-driver-aarch64-linux.zip -d temp_linux_arm_driver
+          mv temp_linux_arm_driver/slimevr/* release/linux/
+          rm -rf temp_linux_arm_driver
       # --- End of Linux aarch64
 
       - name: "Move installscripts to windows depot"
