@@ -127,7 +127,7 @@ jobs:
       - name: "Unzip linux aarch64 OpenVR Driver"
         run: |
           unzip -o slimevr-openvr-driver-aarch64-linux.zip -d temp_linux_arm_driver
-          mv temp_linux_arm_driver/slimevr/* release/linux/
+          mv temp_linux_arm_driver/slimevr/bin/* release/linux/
           rm -rf temp_linux_arm_driver
       # --- End of Linux aarch64
 
