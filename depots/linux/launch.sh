@@ -13,7 +13,7 @@ elif [[ "$ARCH" == "aarch64" || "$ARCH" == "arm64" ]]; then
     cd "$SCRIPT_DIR/aarch64/SlimeVR"
     export LD_LIBRARY_PATH="lib:${LD_LIBRARY_PATH:-}"
     export PATH="jre/bin:$PATH"
-    ./slimevr -- --steam --enable-features=Vulkan
+    ./slimevr --enable-features=Vulkan -- --steam
 
 else
     echo "Error: Unsupported architecture '${ARCH}'" >&2
