@@ -3,17 +3,19 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ARCH=$(uname -m)
 
+export ELECTRON_OZONE_PLATFORM_HINT="auto"
+
 if [[ "$ARCH" == "x86_64" ]]; then
     cd "$SCRIPT_DIR/x64/SlimeVR"
     export LD_LIBRARY_PATH="lib:${LD_LIBRARY_PATH:-}"
     export PATH="jre/bin:$PATH"
-    ./slimevr -- --steam
+    ./slimevr --no-sandbox -- --steam
 
 elif [[ "$ARCH" == "aarch64" || "$ARCH" == "arm64" ]]; then
     cd "$SCRIPT_DIR/aarch64/SlimeVR"
     export LD_LIBRARY_PATH="lib:${LD_LIBRARY_PATH:-}"
     export PATH="jre/bin:$PATH"
-    ./slimevr --enable-features=Vulkan -- --steam
+    exec ./slimevr --enable-features=Vulkan --no-sandbox -- --steam
 
 else
     echo "Error: Unsupported architecture '${ARCH}'" >&2
