@@ -15,6 +15,7 @@ elif [[ "$ARCH" == "aarch64" || "$ARCH" == "arm64" ]]; then
     cd "$SCRIPT_DIR/aarch64/SlimeVR"
     export LD_LIBRARY_PATH="lib:${LD_LIBRARY_PATH:-}"
     export PATH="jre/bin:$PATH"
+    export isFrame=1
     exec ./slimevr --enable-features=Vulkan --no-sandbox -- --steam
 
 else
