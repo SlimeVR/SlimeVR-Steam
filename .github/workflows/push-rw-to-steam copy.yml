@@ -1,4 +1,4 @@
-name: Push rc to steam
+name: Push rewrite to steam
 on: workflow_dispatch
 
 jobs:
