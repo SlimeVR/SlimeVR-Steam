@@ -130,6 +130,7 @@ jobs:
         run: |
           mv scripts/Installscript.vdf release/windows/Installscript.vdf
           mv scripts/installusbdrivers.bat release/windows/x64/SlimeVR/installusbdrivers.bat
+          mv scripts/drivercleanup.bat release/windows/x64/SlimeVR/drivercleanup.bat
 
       - name: "Deploy to steam"
         uses: game-ci/steam-deploy@v3
