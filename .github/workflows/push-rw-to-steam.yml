@@ -144,4 +144,4 @@ jobs:
           depot1InstallScriptPath: release/windows
           depot2Path: release/linux
           #depot3path: release/macos
-          releaseBranch: actions
+          releaseBranch: rewrite
