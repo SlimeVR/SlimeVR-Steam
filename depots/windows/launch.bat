@@ -1,1 +1,0 @@
-start "" "x64\SlimeVR\SlimeVR.exe"
