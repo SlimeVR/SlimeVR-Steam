@@ -13,7 +13,7 @@ if %ERRORLEVEL% NEQ 0 (
     exit /B
 )
 
-pnputil /add-driver "slimevr_usb_drivers\*.inf" /install /subdirs
+pnputil /add-driver "x64\SlimeVR\slimevr_usb_drivers\*.inf" /install /subdirs
 :: Overwrite the exit code so the script doesn't keep running when already installed
 if %ERRORLEVEL% == 2 (
     exit /B 0
