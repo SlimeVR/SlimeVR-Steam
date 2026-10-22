@@ -13,9 +13,21 @@ if %ERRORLEVEL% NEQ 0 (
     exit /B
 )
 
+:: Try 64 bit registry to find install path
+for /f "tokens=2*" %%A in ('reg query "HKLM\SOFTWARE\Wow6432Node\Valve\Steam" /v "InstallPath" 2^>nul') do (
+    set "STEAMPATH=%%B"
+)
+
+:: Try 32 bit registry if 64 bit didn't conntain it
+if "%STEAMPATH%"=="" (
+    for /f "tokens=2*" %%A in ('reg query "HKLM\SOFTWARE\Valve\Steam" /v "InstallPath" 2^>nul') do (
+        set "STEAMPATH=%%B"
+    )
+)
+
 :: Fixup SteamVR installation, since the standalone installer copies the driver
 :: into the SteamVR drivers folder instead of using vrpathreg.
-set "DRIVERPATH=%STEAMPATH%\steamapps\common\SteamVR\drivers\slimevr"
+set "DRIVERPATH="%STEAMPATH%\steamapps\common\SteamVR\drivers\slimevr""
 if exist %DRIVERPATH% (
     rd /s /q %DRIVERPATH%
 )
