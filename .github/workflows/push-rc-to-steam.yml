@@ -1,4 +1,4 @@
-name: Push rc to steam
+name: Push RC to steam
 on: workflow_dispatch
 
 jobs:
@@ -129,8 +129,8 @@ jobs:
       - name: "Move installscripts to windows depot"
         run: |
           mv scripts/Installscript.vdf release/windows/Installscript.vdf
-          mv scripts/installusbdrivers.bat release/windows/x64/SlimeVR/installusbdrivers.bat
-          mv scripts/drivercleanup.bat release/windows/x64/SlimeVR/drivercleanup.bat
+          mv scripts/installusbdrivers.bat release/windows/installusbdrivers.bat
+          mv scripts/drivercleanup.bat release/windows/drivercleanup.bat
 
       - name: "Deploy to steam"
         uses: game-ci/steam-deploy@v3
