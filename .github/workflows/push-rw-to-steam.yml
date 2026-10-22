@@ -129,8 +129,8 @@ jobs:
       - name: "Move installscripts to windows depot"
         run: |
           mv scripts/Installscript.vdf release/windows/Installscript.vdf
-          mv scripts/installusbdrivers.bat release/windows/x64/SlimeVR/installusbdrivers.bat
-          mv scripts/drivercleanup.bat release/windows/x64/SlimeVR/drivercleanup.bat
+          mv scripts/installusbdrivers.bat release/windows/installusbdrivers.bat
+          mv scripts/drivercleanup.bat release/windows/drivercleanup.bat
 
       - name: "Deploy to steam"
         uses: game-ci/steam-deploy@v3
@@ -144,4 +144,4 @@ jobs:
           depot1InstallScriptPath: release/windows
           depot2Path: release/linux
           #depot3path: release/macos
-          releaseBranch: rewrite
+          releaseBranch: actions
