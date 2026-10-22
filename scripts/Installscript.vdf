@@ -8,12 +8,12 @@
     {
         "InstallUSBDrivers"
         {
-            "HasRunKey"     "HKEY_LOCAL_MACHINE\\Software\\Valve\\Steam\\Apps\\3245490\\USBDriversInstalled"
+            "HasRunKey"     "HKEY_LOCAL_MACHINE\\Software\\Valve\\Steam\\Apps\\3245490"
             "Process 1"     "%INSTALLDIR%\\installusbdrivers.bat"
         }
         "DriverCleanup"
         {
-            "HasRunKey"     "HKEY_LOCAL_MACHINE\\Software\\Valve\\Steam\\Apps\\3245490\\RanDriverCleanup"
+            "HasRunKey"     "HKEY_LOCAL_MACHINE\\Software\\Valve\\Steam\\Apps\\3245490"
             "Process 1"     "%INSTALLDIR%\\drivercleanup.bat"
         }
     }
